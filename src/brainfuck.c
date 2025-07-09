@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-#include <assert.h>
+// #include <assert.h>
 
 #include <brainfuck.h>
 
@@ -227,9 +227,8 @@ BrainfuckInstruction * brainfuck_parse_stream_until(FILE *stream, const int unti
 				// 跳过整行
 				while ((ch = fgetc(stream)) != '\n' && ch != EOF);
 				continue; // 重新开始循环
-			} else {
-				ungetc(next, stream); // 回退字符
 			}
+			ungetc(next, stream); // 回退字符
 		}
 
 		// 跳过以 #! 开头的 shebang 行（仅第一行）
@@ -241,11 +240,39 @@ BrainfuckInstruction * brainfuck_parse_stream_until(FILE *stream, const int unti
 				while ((ch = fgetc(stream)) != '\n' && ch != EOF);
 				first_line = 0;
 				continue; // 重新开始循环
-			} else {
-				ungetc(next, stream);
 			}
+			ungetc(next, stream);
 		}
 		first_line = 0;
+
+		switch(ch) {
+			case SUB_BRAINFUCK_TOKEN_PLUS:
+			case CAPITAL_SUB_BRAINFUCK_TOKEN_PLUS:
+				ch = BRAINFUCK_TOKEN_PLUS;
+				break;
+			case SUB_BRAINFUCK_TOKEN_MINUS:
+			case CAPITAL_SUB_BRAINFUCK_TOKEN_MINUS:
+				ch = BRAINFUCK_TOKEN_MINUS;
+				break;
+			case SUB_BRAINFUCK_TOKEN_PREVIOUS:
+			case CAPITAL_SUB_BRAINFUCK_TOKEN_PREVIOUS:
+				ch = BRAINFUCK_TOKEN_PREVIOUS;
+				break;
+			case SUB_BRAINFUCK_TOKEN_NEXT:
+			case CAPITAL_SUB_BRAINFUCK_TOKEN_NEXT:
+				ch = BRAINFUCK_TOKEN_NEXT;
+				break;
+			case SUB_BRAINFUCK_TOKEN_OUTPUT:
+			case CAPITAL_SUB_BRAINFUCK_TOKEN_OUTPUT:
+				ch = BRAINFUCK_TOKEN_OUTPUT;
+				break;
+			case SUB_BRAINFUCK_TOKEN_INPUT:
+			case CAPITAL_SUB_BRAINFUCK_TOKEN_INPUT:
+				ch = BRAINFUCK_TOKEN_INPUT;
+				break;
+			default: ;
+		}
+
 
 		instruction->type = ch;
 		instruction->difference = 1;
