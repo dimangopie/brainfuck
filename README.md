@@ -2,7 +2,9 @@ brainfuck
 [![Build Status](https://github.com/fabianishere/brainfuck/workflows/Build/badge.svg)](https://github.com/fabianishere/brainfuck/actions?query=workflow%3ABuild)
 ===========
 Brainfuck interpreter written in C.
-
+## Update
+1. Added support for annotating '//' and shabang '#!'
+2. Added support for VOWEL 'aeiouy', '<>-+.,' correspongs to 'aeiouy' or 'AEIOUY'
 ## Usage
     brainfuck [-veh] file...
 	-e --eval	run code directly
