@@ -4,7 +4,7 @@ brainfuck
 Brainfuck interpreter written in C.
 ## Update
 1. Added support for annotating '//' and shabang '#!'
-2. Added support for VOWEL 'aeiouy', '<>-+.,' correspongs to 'aeiouy' or 'AEIOUY'
+2. Added support for VOWEL 'aeiouy'. '<>-+.,' correspongs to 'aeiouy' or 'AEIOUY'
 ## Usage
     brainfuck [-veh] file...
 	-e --eval	run code directly
