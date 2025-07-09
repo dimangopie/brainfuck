@@ -14,7 +14,8 @@ option(ENABLE_EXTENSION_DEBUG "Enable the debug extension for brainfuck")
 option(INSTALL_EXAMPLES "Install the examples")
 
 ## Target ##
-set(BRAINFUCK_H include/brainfuck.h)
+set(BRAINFUCK_H include/brainfuck.h
+        src/brainfuck.c)
 set(BRAINFUCK_C_FLAGS
         $<$<OR:$<C_COMPILER_ID:Clang>,$<C_COMPILER_ID:AppleClang>,$<C_COMPILER_ID:GNU>>:
             -Wall -Wextra>

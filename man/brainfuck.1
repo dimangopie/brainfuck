@@ -28,17 +28,17 @@ A brainfuck interpreter written in C.
 The brainfuck syntax is described below:
 .Pp
 .Bl -tag -width -indent
-.It Sy >
+.It Sy > e
 Increment the data pointer (to point to the next cell to the right).
-.It Sy <
+.It Sy < a
 Decrement the data pointer (to point to the next cell to the left).
-.It Sy +
+.It Sy + o
 Increment (increase by one) the byte at the data pointer.
-.It Sy -
+.It Sy - i
 Decrement (decrease by one) the byte at the data pointer.
-.It Sy \&.
+.It Sy \&. u
 Output the byte at the data pointer as an ASCII encoded character.
-.It Sy \&,
+.It Sy \&, y
 Accept one byte of input, storing its value in the byte at the data pointer.
 .It Sy \&[
 If the byte at the data pointer is zero, then instead of moving the instruction pointer forward to the next command, jump it forward to the command after the matching 
