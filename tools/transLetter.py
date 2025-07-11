@@ -44,13 +44,6 @@ def head_preprocessing_line(_line: str) -> (str, bool):
     return _line, False
 
 def preprocessing_line(_line: str) -> str:
-    """
-    逐个字符读取并做预处理：
-    2. 跳过 // 注释行。
-    3. 跳过首行的 #! shebang。
-    4. 将 o/O → +, i/I → - 等替换。
-    返回处理后的单个字符；读到文件末尾返回 ''
-    """
     tmp_strings = _line.split("//", 1)
     remain_string = tmp_strings[0]
     tmp_line = ""
@@ -67,9 +60,9 @@ def preprocessing_line(_line: str) -> str:
         return tmp_line + "//" + annotation_string
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="letters 转换 letters")
-    parser.add_argument("-i", required=False, help="输入文件的路径")
-    parser.add_argument("-o", required=False, help="输出文件的路径")
+    parser = argparse.ArgumentParser(description="letters to others")
+    parser.add_argument("-i", required=False, help="input file path")
+    parser.add_argument("-o", required=False, help="output file path")
     args = parser.parse_args()
     if args.i is not None:
         input_file = args.i

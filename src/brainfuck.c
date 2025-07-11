@@ -39,25 +39,25 @@ char preprocessing_char(char ch, FILE *stream) {
 		ch = fgetc(stream);
 	}
 
-	// 跳过以 // 开头的注释行
+	// Skip "//.*"
 	if (ch == '/') {
 		char next = fgetc(stream);
 		if (next == '/') {
-			// 跳过整行
+			// Skip the entire line
 			while ((ch = fgetc(stream)) != '\n' && ch != EOF) {
 			}
 			return ch;
 		}
-		ungetc(next, stream); // 回退字符
+		ungetc(next, stream);
 	}
 
-	// 跳过以 #! 开头的 shebang 行（仅第一行）
+	// Skip "^#!.*", but fist line of a file
 	static int first_line = 1;
 	if (first_line && ch == '#') {
 		first_line = 0;
 		char next = fgetc(stream);
 		if (next == '!') {
-			// 跳过整行
+			// Skip the entire line
 			while ((ch = fgetc(stream)) != '\n' && ch != EOF) {
 			}
 			return ch;
@@ -67,10 +67,10 @@ char preprocessing_char(char ch, FILE *stream) {
 
 	for (int i = 0; i < other_char_table_size; ++i) {
 		const char *table = other_char_table[i];
-		for (int j = 0; table[j] != '\0'; ++j) {// 遍历直到遇到空字符
+		for (int j = 0; table[j] != '\0'; ++j) {// Iterate until a null character is encountered.
 			if (ch == table[j]) {
-				ch = table[0]; // 替换 ch 为子数组的第一个元素
-				break; // 找到匹配项后退出内层循环
+				ch = table[0]; // Replace ch with the first element of the subarray.
+				break; // Exit the inner loop once a match is found.
 			}
 		}
 	}
