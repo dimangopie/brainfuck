@@ -1,4 +1,4 @@
-
+#!/home/mango/CLionProjects/brainfuck/build/brainfuck
 
 // Calculate (16*16*16*16)^128 AKA 2^2048
 ++[>++++++++<-]>[>++++++++<-]>[<<

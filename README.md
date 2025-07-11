@@ -3,8 +3,30 @@ brainfuck
 ===========
 Brainfuck interpreter written in C.
 ## Update
-1. Added support for annotating '//' and shabang '#!'
-2. Added support for VOWEL 'aeiouy'. '<>-+.,' correspongs to 'aeiouy' or 'AEIOUY'
+1. Added a double slash '//' comment function.
+2. Added a shebang '#!' line function.
+3. Added a function that allows letters to replace symbols 
+   - default replacing mothed
+   - 
+   | origin | optional  |
+   |--------|-----------|
+   | '+'    | 'o' , 'O' |
+   | '-'    | 'i' , 'I' |
+   | '<'    | 'a' , 'A' |
+   | '>'    | 'e' , 'E' |
+   | '.'    | '.' , '.' |
+   | ','    | ',' , ',' |
+   | '['    | 'u' , 'U' |
+   | ']'    | 'y' , 'Y' |
+   | '#'    | '?' , '!' |
+   you can change them in `src/brainfuck.c:other_char_table`.\
+   I love these vowels, reading them is like listening to a baby trying to speak but only babbling.
+4. Added two tools transLetter.py and transLetters.sh to help users automatically convert letters to others.
+5. Add a tools folder to store transLetter.py and transLetters.sh.\ 
+You can compare the instruction parameters in transLetters.sh to customize the conversion file.
+6. Removed the `editline` library dependency,\
+because it was interfering with the NVIDIA 4060 GPU driver on my Ubuntu PC.
+>>>>>>> 2a04665 (Enhanced all features :))
 ## Usage
     brainfuck [-veh] file...
 	-e --eval	run code directly
@@ -45,29 +67,42 @@ $ git clone https://github.com/fabianishere/brainfuck.git
 or simply [grab](https://github.com/fabianishere/brainfuck/archive/master.zip) a copy of the source code as a Zip file.
 
 ## Building
-Create the build directory.
-```sh
-$ mkdir build
-$ cd build
-```
-Brainfuck requires CMake and a C compiler (e.g. Clang or GCC) in order to run. It also depends on [libedit](http://thrysoee.dk/editline/), which is available in the main repositories of most Linux distributions (e.g. as [libedit-dev](https://packages.debian.org/stretch/libedit-dev) on Debian/Ubuntu) and comes with the macOS XCode command line tools. 
+1. Create the build directory.
+   ```sh
+   $ mkdir build
+   $ cd build
+   ```
+2. Brainfuck requires CMake and a C compiler (e.g. Clang or GCC) in order to run. It also depends on [libedit](http://thrysoee.dk/editline/), which is available in the main repositories of most Linux distributions (e.g. as [libedit-dev](https://packages.debian.org/stretch/libedit-dev) on Debian/Ubuntu) and comes with the macOS XCode command line tools. 
 Then, simply create the Makefiles:
-```sh
-$ cmake ..
-```
-and finally, build it using the building system you chose (e.g. Make):
-```sh
-$ make
-```
+   ```sh
+   $ cmake ..
+   ```
+3. and finally, build it using the building system you chose (e.g. Make):
+   ```sh
+   $ make
+   ```
 
-After the build has been finished, you may install the binaries to your local system (see [CMAKE\_INSTALL\_PREFIX](https://cmake.org/cmake/help/v3.0/variable/CMAKE_INSTALL_PREFIX.html) for information about the install prefix):
-```sh
-$ make install
-```
-Alternatively, you may run the interpreter directly without installation, for instance:
-```sh
-$ ./brainfuck ../examples/hello.bf
-```
+4. After the build has been finished, you may install the binaries to your local system (see [CMAKE\_INSTALL\_PREFIX](https://cmake.org/cmake/help/v3.0/variable/CMAKE_INSTALL_PREFIX.html) for information about the install prefix):
+   ```sh
+   $ make install
+   ```
+5. Alternatively, you may run the interpreter directly without installation, for instance:
+   ```sh
+   $ ./brainfuck ../examples/hello.bf
+   ```
+6. Because some new features are added, you can add `#!brainfuck` and change you symbols 
+like the `hello.bf`:
+   ```brainfuck
+   #!/usr/bin/env brainfuck
+   // hello <O-O>
+   ooooooooueooooueooeoooeoooeoaaaaiyeoeoeieeouayaiyee.eiii.ooooooo..ooo.ee.ai.a.oo
+   o.iiiiii.iiiiiiii.eeo.eoo.
+   ```
+   Then run the file directly in the terminal\
+   ```sh
+   sudo chmod 755 hello.bf 
+   hello.bf
+   ```
 
 ## License
 The code is released under the Apache License version 2.0. See [LICENSE.txt](/LICENSE.txt).

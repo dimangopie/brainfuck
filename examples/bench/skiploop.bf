@@ -1,3 +1,4 @@
+#!/home/mango/CLionProjects/brainfuck/build/brainfuck
 [ This program tests how well the interpreter reacts to large
   runs of '>' and '<'.
   This is the source RLE-encoded.

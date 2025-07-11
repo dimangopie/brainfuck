@@ -12,15 +12,71 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-// #include <assert.h>
+#include <assert.h>
 
 #include <brainfuck.h>
+const char other_char_table[][5] = {
+	{BRAINFUCK_TOKEN_PLUS       , '+', 'o', 'O'},
+	{BRAINFUCK_TOKEN_MINUS      , '-', 'i', 'I'},
+	{BRAINFUCK_TOKEN_PREVIOUS   , '<', 'a', 'A'},
+	{BRAINFUCK_TOKEN_NEXT       , '>', 'e', 'E'},
+	{BRAINFUCK_TOKEN_OUTPUT   	, '.', '.', '.'},
+	{BRAINFUCK_TOKEN_INPUT      , ',', ',', ','},
+	{BRAINFUCK_TOKEN_LOOP_START	, '[', 'u', 'U'},
+	{BRAINFUCK_TOKEN_LOOP_END   , ']', 'y', 'Y'},
+	{BRAINFUCK_TOKEN_BREAK	    , '#', '?', '!'},
+};
+const int other_char_table_size = sizeof(other_char_table) / sizeof(other_char_table[0]); // 计算子数组的数量
+
+char preprocessing_char(char ch, FILE *stream) {
+	while (ch == ' '  || ch == '\n' || ch == '\r' || ch == '\t') {
+		ch = fgetc(stream);
+	}
+
+	// 跳过以 // 开头的注释行
+	if (ch == '/') {
+		char next = fgetc(stream);
+		if (next == '/') {
+			// 跳过整行
+			while ((ch = fgetc(stream)) != '\n' && ch != EOF) {
+			}
+			return ch;
+		}
+		ungetc(next, stream); // 回退字符
+	}
+
+	// 跳过以 #! 开头的 shebang 行（仅第一行）
+	static int first_line = 1;
+	if (first_line && ch == '#') {
+		first_line = 0;
+		char next = fgetc(stream);
+		if (next == '!') {
+			// 跳过整行
+			while ((ch = fgetc(stream)) != '\n' && ch != EOF) {
+			}
+			return ch;
+		}
+		ungetc(next, stream);
+	}
+
+	for (int i = 0; i < other_char_table_size; ++i) {
+		const char *table = other_char_table[i];
+		for (int j = 0; table[j] != '\0'; ++j) {// 遍历直到遇到空字符
+			if (ch == table[j]) {
+				ch = table[0]; // 替换 ch 为子数组的第一个元素
+				break; // 找到匹配项后退出内层循环
+			}
+		}
+	}
+
+	return ch;
+}
 
 /**
  * Creates a new state.
@@ -219,60 +275,10 @@ BrainfuckInstruction * brainfuck_parse_stream_until(FILE *stream, const int unti
 	char temp;
 	while ((ch = fgetc(stream)) != until) {
 		if (ch == EOF || feof(stream)) { break; }
-
-		// 跳过以 // 开头的注释行
-		if (ch == '/') {
-			char next = fgetc(stream);
-			if (next == '/') {
-				// 跳过整行
-				while ((ch = fgetc(stream)) != '\n' && ch != EOF);
-				continue; // 重新开始循环
-			}
-			ungetc(next, stream); // 回退字符
+		ch = preprocessing_char(ch, stream);
+		if (ch == EOF || ch == '\n') {
+			continue;
 		}
-
-		// 跳过以 #! 开头的 shebang 行（仅第一行）
-		static int first_line = 1;
-		if (first_line && ch == '#') {
-			char next = fgetc(stream);
-			if (next == '!') {
-				// 跳过整行
-				while ((ch = fgetc(stream)) != '\n' && ch != EOF);
-				first_line = 0;
-				continue; // 重新开始循环
-			}
-			ungetc(next, stream);
-		}
-		first_line = 0;
-
-		switch(ch) {
-			case SUB_BRAINFUCK_TOKEN_PLUS:
-			case CAPITAL_SUB_BRAINFUCK_TOKEN_PLUS:
-				ch = BRAINFUCK_TOKEN_PLUS;
-				break;
-			case SUB_BRAINFUCK_TOKEN_MINUS:
-			case CAPITAL_SUB_BRAINFUCK_TOKEN_MINUS:
-				ch = BRAINFUCK_TOKEN_MINUS;
-				break;
-			case SUB_BRAINFUCK_TOKEN_PREVIOUS:
-			case CAPITAL_SUB_BRAINFUCK_TOKEN_PREVIOUS:
-				ch = BRAINFUCK_TOKEN_PREVIOUS;
-				break;
-			case SUB_BRAINFUCK_TOKEN_NEXT:
-			case CAPITAL_SUB_BRAINFUCK_TOKEN_NEXT:
-				ch = BRAINFUCK_TOKEN_NEXT;
-				break;
-			case SUB_BRAINFUCK_TOKEN_OUTPUT:
-			case CAPITAL_SUB_BRAINFUCK_TOKEN_OUTPUT:
-				ch = BRAINFUCK_TOKEN_OUTPUT;
-				break;
-			case SUB_BRAINFUCK_TOKEN_INPUT:
-			case CAPITAL_SUB_BRAINFUCK_TOKEN_INPUT:
-				ch = BRAINFUCK_TOKEN_INPUT;
-				break;
-			default: ;
-		}
-
 
 		instruction->type = ch;
 		instruction->difference = 1;
@@ -291,8 +297,8 @@ BrainfuckInstruction * brainfuck_parse_stream_until(FILE *stream, const int unti
 				break;
 			case BRAINFUCK_TOKEN_NEXT:
 			case BRAINFUCK_TOKEN_PREVIOUS:
-				while ((temp = fgetc(stream)) != until && (temp == BRAINFUCK_TOKEN_NEXT
-						|| temp == BRAINFUCK_TOKEN_PREVIOUS)) {
+				while ((temp = fgetc(stream)) != until
+					&& (temp == BRAINFUCK_TOKEN_NEXT || temp == BRAINFUCK_TOKEN_PREVIOUS)) {
 					if (temp == ch) {
 						instruction->difference++;
 					} else {

@@ -9,7 +9,6 @@ set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
 
 ## Compile-time options ##
 option(ENABLE_CLI "Enable the command line interface" ON)
-option(ENABLE_EDITLINE "Enable GNU readline functionality provided by the editline library" ON)
 option(ENABLE_EXTENSION_DEBUG "Enable the debug extension for brainfuck")
 option(INSTALL_EXAMPLES "Install the examples")
 
@@ -50,9 +49,7 @@ if(ENABLE_CLI)
     target_compile_options(brainfuck-cli PRIVATE "${BRAINFUCK_C_FLAGS}")
 
     if(ENABLE_EDITLINE)
-        find_package(editline REQUIRED)
         target_compile_definitions(brainfuck-cli PRIVATE BRAINFUCK_EDITLINE_LIB)
-        target_link_libraries(brainfuck-cli PRIVATE editline)
     endif()
 endif()
 

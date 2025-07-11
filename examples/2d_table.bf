@@ -1,4 +1,4 @@
-
+#!/home/mango/CLionProjects/brainfuck/build/brainfuck
 2D Table reading routine for BrainFuck
         Made By: NYYRIKKI 2001
 

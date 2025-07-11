@@ -1,3 +1,4 @@
+#!/home/mango/CLionProjects/brainfuck/build/brainfuck
 [
  The 196-algorithm implemented in brainfuck by Mats Linander.
 

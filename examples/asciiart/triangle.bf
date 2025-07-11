@@ -1,3 +1,4 @@
+#!/home/mango/CLionProjects/brainfuck/build/brainfuck
 [ This program prints Sierpinski triangle on 80-column display. ]
                                 >    
                                + +    
@@ -14,7 +15,7 @@
                     >       >       +       <    
                    < <     < <     < <     < <    
                   <   [   -   [   -   >   +   <    
-                 ] > [ - < + > > > . < < ] > > >    
+                 ] > [ - < + > > > . < < ] > > >    // dt crraa
                 [                               [    
                - >                             + +    
               +   +                           +   +    
@@ -30,4 +31,4 @@
     [       -       <       -       >       ]       <       <    
    < ]     < <     < <     ] +     + +     + +     + +     + +    
   +   .   +   +   +   .   [   -   ]   <   ]   +   +   +   +   +    
- * * * * * M a d e * B y : * N Y Y R I K K I * 2 0 0 2 * * * * *    
+ * * * * * * * * * * * * * * * * * * * * * * * 2 0 0 2 * * * * *
