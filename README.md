@@ -1,6 +1,5 @@
 brainfuck
 [![Build Status](https://github.com/fabianishere/brainfuck/workflows/Build/badge.svg)](https://github.com/fabianishere/brainfuck/actions?query=workflow%3ABuild)
-===========
 Brainfuck interpreter written in C.
 ## Update
 1. Added a double slash '//' comment function.
@@ -26,7 +25,6 @@ Brainfuck interpreter written in C.
 You can compare the instruction parameters in transLetters.sh to customize the conversion file.
 6. Removed the `editline` library dependency,\
 because it was interfering with the NVIDIA 4060 GPU driver on my Ubuntu PC.
->>>>>>> 2a04665 (Enhanced all features :))
 ## Usage
     brainfuck [-veh] file...
 	-e --eval	run code directly
