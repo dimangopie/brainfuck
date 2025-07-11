@@ -18,8 +18,9 @@ Brainfuck interpreter written in C.
    | '['    | 'u' , 'U' |
    | ']'    | 'y' , 'Y' |
    | '#'    | '?' , '!' |
-   you can change them in `src/brainfuck.c:other_char_table`.\
-   I love these vowels, reading them is like listening to a baby trying to speak but only babbling.
+   
+   - you can change them in `src/brainfuck.c:other_char_table`.\
+   - I love these vowels, reading them is like listening to a baby trying to speak but only babbling.
 4. Added two tools transLetter.py and transLetters.sh to help users automatically convert letters to others.
 5. Add a tools folder to store transLetter.py and transLetters.sh.\ 
 You can compare the instruction parameters in transLetters.sh to customize the conversion file.
